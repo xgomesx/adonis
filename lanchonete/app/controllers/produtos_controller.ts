@@ -7,8 +7,10 @@ export default class ProdutosController {
 
     async index({ request }: HttpContext) {
         const page = request.input('page')
-        const perpage=request.input('perpage',10)
-        return await Produto.query().preload('tipo').paginate(page, perpage)
+        const perpage = request.input('perpage', 10)
+        return await Produto.query().preload('tipo')
+            .preload('ingredientes')
+            .paginate(page, perpage)
     }
     async show({ params }: HttpContext) {
 
@@ -20,22 +22,22 @@ export default class ProdutosController {
         return await Produto.create(dados)
     }
 
-    async update({params,request}: HttpContext) {
+    async update({ params, request }: HttpContext) {
         const produto = await Produto.findOrFail(params.id)
-        const dados = request.only(['nome','preco','tamanho','tipoId'])
+        const dados = request.only(['nome', 'preco', 'tamanho', 'tipoId'])
 
         produto.merge(dados)
         return await produto.save()
-    
+
     }
 
-    async destroy({params}: HttpContext) {
+    async destroy({ params }: HttpContext) {
         const produto = await Produto.findOrFail(params.id)
 
 
-     await produto.delete()
+        await produto.delete()
 
-    return{msg:'Registro deletado com sucesso!', produto}
+        return { msg: 'Registro deletado com sucesso!', produto }
 
 
     }

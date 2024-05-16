@@ -25,7 +25,6 @@ router.get('/', async () => {
   }
 })
 
-router.resource('/produtos', ProdutosController).apiOnly()
 router.resource('/tipos', TiposController).apiOnly()
 router.resource('/ingredientes', IngredientesController).apiOnly()
 router.resource('/cargos', CargosController).apiOnly()
